@@ -8,7 +8,7 @@ namespace EFModeling.DataAnnotations.Concurrency
         public DbSet<Person> People { get; set; }
     }
 
-    #region ConfigureConcurrencyAnnotations
+    #region Concurrencty
     public class Person
     {
         public int PersonId { get; set; }
