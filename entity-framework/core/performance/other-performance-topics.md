@@ -1,12 +1,14 @@
 ---
-title: DbContext Pooling
-description: DbContext pooling in Entity Framework Core
+title: Other Performance Topics
+description: Other performance topics for Entity Framework Core
 author: rick-anderson
 ms.author: riande
 ms.date: 9/19/2020
-uid: core/miscellaneous/context-pooling
+uid: core/performance/other-performance-topics
 ---
-# DbContext pooling
+# Other Performance Topics
+
+## DbContext pooling
 
 `AddDbContextPool` enables pooling of `DbContext` instances. Context pooling can increase throughput in high-scale scenarios such as web servers by reusing context instances, rather than creating new instances for each request.
 
@@ -25,7 +27,7 @@ This is conceptually similar to how connection pooling operates in ADO.NET provi
 
 The `poolSize` parameter of <xref:Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.AddDbContextPool%2A> sets the maximum number of instances retained by the pool. Once `poolSize` is exceeded, new context instances are not cached and  EF falls back to the non-pooling behavior of creating instances on demand.
 
-## Limitations
+### Limitations
 
 Apps should be profiled and tested to show that context initialization is a significant cost.
 
