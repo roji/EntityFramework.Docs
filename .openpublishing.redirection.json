@@ -459,6 +459,11 @@
             "source_path": "entity-framework/core/testing/in-memory.md",
             "redirect_url": "/ef/core/testing/index",
             "redirect_document_id": false
+        },
+        {
+            "source_path": "entity-framework/core/providers/writing-a-provider.md",
+            "redirect_url": "/ef/core/providers/writing-a-provider/index",
+            "redirect_document_id": false
         }
     ]
 }

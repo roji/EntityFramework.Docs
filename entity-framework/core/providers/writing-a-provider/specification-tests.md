@@ -1,40 +1,12 @@
 ---
-title: Writing a Database Provider - EF Core
-description: Information on writing a new Entity Framework Core provider
-author: ajcvickers
-ms.date: 10/27/2016
-uid: core/providers/writing-a-provider
+title: Writing a Database Provider - Specification Tests - EF Core
+description: The EF Core specification tests
+author: roji
+ms.date: 03/17/2021
+uid: core/providers/writing-a-provider/specification-tests
 ---
 
-# Writing a Database Provider
-
-For information about writing an Entity Framework Core database provider, see [So you want to write an EF Core provider](https://blog.oneunicorn.com/2016/11/11/so-you-want-to-write-an-ef-core-provider/) by [Arthur Vickers](https://github.com/ajcvickers).
-
-> [!NOTE]
-> These posts have not been updated since EF Core 1.1 and there have been significant changes since that time.
-[Issue 681](https://github.com/dotnet/EntityFramework.Docs/issues/681) is tracking updates to this documentation.
-
-The EF Core codebase is open source and contains several database providers that can be used as a reference. You can find the source code at <https://github.com/dotnet/efcore>. It may also be helpful to look at the code for commonly used third-party providers, such as [Npgsql](https://github.com/npgsql/Npgsql.EntityFrameworkCore.PostgreSQL), [Pomelo MySQL](https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql), and [SQL Server Compact](https://github.com/ErikEJ/EntityFramework.SqlServerCompact). In particular, these projects are set up to extend from and run functional tests that we publish on NuGet. This kind of setup is strongly recommended.
-
-## Keeping up-to-date with provider changes
-
-Starting with work after the 2.1 release, we have created a [log of changes](xref:core/providers/provider-log) that may need corresponding changes in provider code. This is intended to help when updating an existing provider to work with a new version of EF Core.
-
-Prior to 2.1, we used the [`providers-beware`](https://github.com/dotnet/efcore/labels/providers-beware) and [`providers-fyi`](https://github.com/dotnet/efcore/labels/providers-fyi) labels on our GitHub issues and pull requests for a similar purpose. We will continiue to use these lables on issues to give an indication which work items in a given release may also require work to be done in providers. A `providers-beware` label typically means that the implementation of an work item may break providers, while a `providers-fyi` label typically means that providers will not be broken, but code may need to be changed anyway, for example, to enable new functionality.
-
-## Suggested naming of third party providers
-
-We suggest using the following naming for NuGet packages. This is consistent with the names of packages delivered by the EF Core team.
-
-`<Optional project/company name>.EntityFrameworkCore.<Database engine name>`
-
-For example:
-
-* `Microsoft.EntityFrameworkCore.SqlServer`
-* `Npgsql.EntityFrameworkCore.PostgreSQL`
-* `EntityFrameworkCore.SqlServerCompact40`
-
-## The EF Core specification tests
+# The EF Core Specification Tests
 
 EF Core provides a specification test suite project, which all providers are encouraged to implement. The project contains tests which ensure that the provider function correctly, e.g. by executing various LINQ queries and ensuring that the correct results are returned. This test suite is used by EF Core's own providers (SQL Server, SQLite, Cosmos...) as the primary regression testing mechanism, and are continuously updated and improved as new features are added to EF Core. By implementing these tests for other, 3rd-party providers, you can ensure that your database provider works correctly and implements all the latest EF Core features. Note that the test suite is quite large, as it covers the entire EF Core feature set; you don't have to implement everything - it's perfectly fine to cherry-pick certain test classes, and incrementally improve your coverage with time.
 
@@ -47,7 +19,7 @@ To start using the specification tests, follow these steps:
 * Once the infrastructure for the test class is done, you'll start seeing some green tests on it. You can investigate the failing tests, or temporarily skip them for later investigation. In this way you can add more and more test classes.
 * At some point, when you've extended most of the upstream test classes, you can also create `AcmeDbComplianceTest`, which extends `RelationalComplianceTestBase`. This test class will fail if your own test project doesn't extend an EF Core test class - it's a great way to know whether your test suite is complete, and also whether EF added a new test class in a new version. You can also opt out of extending specific test classes if they're not ready (or not relevant).
 
-### SQL assertions
+## SQL assertions
 
 When implementing the specification tests, you have the option of additionally asserting the SQL that EF Core produces. This isn't mandatory: the specification test implementation already checks that your provider returned the expected rows from the database, so if it passes, your provider is likely doing the right thing. However, asserting that the SQL is what you expect it to be can add additional coverage in some cases, especially where some SQL construct is being used that's specific to your database.
 
@@ -67,7 +39,7 @@ WHERE [c].[City] = N'London'");
 
 The base invocation runs the specification test, which executes the LINQ query and verifies that the results are correct. In addition, `AssertSql` ensures that the SQL matched the baseline included in the test.
 
-#### Inspecting SQL assertion failures
+### Inspecting SQL assertion failures
 
 If a SQL assertion fails, xunit typically reports only the fragment of the SQL which did not match. To see the full SQL produced by your provider, you can have the test infrastructure output the complete new baseline when a test fails, so that you can inspect it and possibly replace the old one. To do this, pass the `ITestOutputHelper` provided by xunit to the `TestSqlLoggerFactory` of the test fixture:
 
@@ -84,7 +56,7 @@ public NorthwindWhereQuerySqlServerTest(
 
 In the EF Core test suites, we usually keep the above line commented out in the constructor, so that we can easily uncomment it any time a SQL assertion fails.
 
-#### Bulk update of baselines
+### Bulk update of baselines
 
 If you use SQL assertions a lot, you'll have many SQL baselines in your test suite. In some cases, a small change - either in your provider or in EF Core itself - may cause a large number of these assertions to fail for some reason, e.g. parentheses were added somewhere. If that happens, manually correcting all the affected baselines can be a very tedious and time-consuming process.
 
