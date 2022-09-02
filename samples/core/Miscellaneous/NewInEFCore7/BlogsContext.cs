@@ -184,9 +184,13 @@ public abstract class BlogsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => (UseSqlite
-                ? optionsBuilder.UseSqlite(@$"DataSource={GetType().Name}")
-                : optionsBuilder.UseSqlServer(@$"Server=(localdb)\mssqllocaldb;Database={GetType().Name}",
+                // ? optionsBuilder.UseSqlite(@$"DataSource={GetType().Name}")
+                ? throw new NotImplementedException()
+                // : optionsBuilder.UseSqlServer(@$"Server=(localdb)\mssqllocaldb;Database={GetType().Name}",
+                : optionsBuilder.UseSqlServer(@$"Server=localhost;User=SA;Password=Abcd5678;Connect Timeout=60;ConnectRetryCount=0;Trust Server Certificate=true;Database={GetType().Name}",
                         sqlServerOptionsBuilder => sqlServerOptionsBuilder.UseNetTopologySuite()))
+
+                        //Server=localhost;Database=test;User=SA;Password=Abcd5678;Connect Timeout=60;ConnectRetryCount=0;Trust Server Certificate=true
             .EnableSensitiveDataLogging()
             .LogTo(
                 s =>

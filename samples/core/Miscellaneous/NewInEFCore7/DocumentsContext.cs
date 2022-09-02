@@ -79,7 +79,8 @@ public abstract class DocumentsContext : DbContext
     public DbSet<Person> People => Set<Person>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(@$"Server=(localdb)\mssqllocaldb;Database={GetType().Name}")
+        // => optionsBuilder.UseSqlServer(@$"Server=localhost;User=SA;Password=Abcd5678;Connect Timeout=60;ConnectRetryCount=0;Trust Server Certificate=true;Database={GetType().Name}")
+        => optionsBuilder.UseSqlServer(@$"Server=localhost;User=SA;Password=Abcd5678;Connect Timeout=60;ConnectRetryCount=0;Trust Server Certificate=true;Database=test")
             .EnableSensitiveDataLogging()
             .LogTo(
                 s =>
