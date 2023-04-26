@@ -422,9 +422,11 @@
       - name: In-memory (not recommended)
         href: core/providers/in-memory/index.md
       - name: Write a database provider
-        href: core/providers/writing-a-provider.md
-      - name: Provider-impacting changes
-        href: core/providers/provider-log.md
+        items:
+          - name: Overview
+            href: core/providers/writing-a-provider/index.md
+          - name: The EF Core specification tests
+            href: core/providers/writing-a-provider/specification-tests.md
 
     - name: Tools & extensions
       href: core/extensions/index.md

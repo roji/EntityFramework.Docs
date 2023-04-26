@@ -474,6 +474,11 @@
             "source_path": "entity-framework/core/modeling/concurrency.md",
             "redirect_url": "/ef/core/saving/concurrency",
             "redirect_document_id": false
+        },
+        {
+            "source_path": "entity-framework/core/providers/writing-a-provider.md",
+            "redirect_url": "/ef/core/providers/writing-a-provider/index",
+            "redirect_document_id": false
         }
     ]
 }
