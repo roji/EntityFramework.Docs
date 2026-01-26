@@ -12,7 +12,9 @@ This page documents noteworthy changes in EF Core 11 which may affect EF provide
 
 ## Changes
 
+* Model validation has been refactored to stop looping over the entire model for each check ([see #37645](https://github.com/dotnet/efcore/issues/37645)).
 * Collation names are now quoted in SQL, like column and table names ([see #37462](https://github.com/dotnet/efcore/issues/37462)). If your database doesn't support collation name quoting, override `QuerySqlGenerator.VisitSql()` and `MigrationsSqlGenerator.ColumnDefinition()` to revert to the previous behavior, but it's recommended to implement some sort of restricted character validation.
+* `JsonTypeMapping` has been renamed to `StructuralJsonTypeMapping`; simply extend the latter instead of the former.
 
 ## Test changes
 
